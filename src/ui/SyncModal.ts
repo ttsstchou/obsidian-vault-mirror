@@ -1,12 +1,14 @@
 import { App, Modal, Setting } from "obsidian";
 import type { SyncPlan } from "../sync/types";
 import { summarizeNoteChanges, summarizePlan } from "../sync/types";
+import { dateLocale, type Language } from "../i18n";
 
 export interface PreviewOptions {
   source: string;
   destination: string;
   massDeletionWarning: boolean;
   firstSync: boolean;
+  language: Language;
 }
 
 export class SyncPreviewModal extends Modal {
@@ -32,9 +34,10 @@ export class SyncPreviewModal extends Modal {
     const { contentEl } = this;
     contentEl.empty();
     contentEl.addClass("vault-mirror-modal");
-    contentEl.createEl("h2", { text: "同步到 iCloud" });
-    addPath(contentEl, "源 Vault · 当前 Vault", this.options.source);
-    addPath(contentEl, "目标 Vault", this.options.destination);
+    const zh = this.options.language === "zh-CN";
+    contentEl.createEl("h2", { text: zh ? "同步到 iCloud" : "Sync to iCloud" });
+    addPath(contentEl, zh ? "源 Vault · 当前 Vault" : "Source vault · Current vault", this.options.source);
+    addPath(contentEl, zh ? "目标 Vault" : "Destination vault", this.options.destination);
 
     const summary = summarizePlan(this.plan);
     const totalChanges = summary.created + summary.updated + summary.deleted;
@@ -42,54 +45,58 @@ export class SyncPreviewModal extends Modal {
     const scanSummary = contentEl.createDiv({ cls: "vault-mirror-scan-summary" });
     scanSummary.createEl("span", {
       cls: "vault-mirror-scan-label",
-      text: "本次实时扫描发现"
+      text: zh ? "本次实时扫描发现" : "Live scan found"
     });
     const totalRow = scanSummary.createDiv({ cls: "vault-mirror-change-total" });
     totalRow.createEl("strong", { text: String(noteChanges.total) });
-    totalRow.createSpan({ text: "篇笔记变更" });
+    totalRow.createSpan({ text: zh ? "篇笔记变更" : " changed notes" });
     scanSummary.createEl("span", {
       cls: "vault-mirror-note-breakdown",
-      text: `新增 ${noteChanges.created} · 更新 ${noteChanges.updated} · 删除 ${noteChanges.deleted}`
+      text: zh
+        ? `新增 ${noteChanges.created} · 更新 ${noteChanges.updated} · 删除 ${noteChanges.deleted}`
+        : `Created ${noteChanges.created} · Updated ${noteChanges.updated} · Deleted ${noteChanges.deleted}`
     });
     scanSummary.createEl("span", {
       cls: "vault-mirror-file-total",
-      text: `全部文件变更：${totalChanges} 项（包含附件、Vault 配置及其他文件）`
+      text: zh
+        ? `全部文件变更：${totalChanges} 项（包含附件、Vault 配置及其他文件）`
+        : `All file changes: ${totalChanges} (including attachments, Vault settings, and other files)`
     });
     scanSummary.createEl("span", {
       cls: "vault-mirror-scan-time",
-      text: `扫描完成时间：${new Date().toLocaleString("zh-CN")}`
+      text: `${zh ? "扫描完成时间" : "Scan completed"}: ${new Date().toLocaleString(dateLocale(this.options.language))}`
     });
 
     if (this.options.firstSync) {
       contentEl.createEl("p", {
         cls: "vault-mirror-notice",
-        text: "这是首次同步，请仔细确认目标路径和文件变更。"
+        text: zh ? "这是首次同步，请仔细确认目标路径和文件变更。" : "This is the first sync. Carefully confirm the destination path and file changes."
       });
     }
 
     if (this.options.massDeletionWarning) {
       contentEl.createEl("p", {
         cls: "vault-mirror-warning",
-        text: `此次同步将从 iCloud 镜像中删除 ${summary.deleted} 个文件。`
+        text: zh ? `此次同步将从 iCloud 镜像中删除 ${summary.deleted} 个文件。` : `This sync will delete ${summary.deleted} files from the destination mirror.`
       });
     }
 
     const stats = contentEl.createDiv({ cls: "vault-mirror-stats" });
-    addStat(stats, "新增文件", summary.created);
-    addStat(stats, "更新文件", summary.updated);
-    addStat(stats, "删除文件", summary.deleted);
-    addStat(stats, "未变更", summary.skipped);
+    addStat(stats, zh ? "新增文件" : "Created files", summary.created);
+    addStat(stats, zh ? "更新文件" : "Updated files", summary.updated);
+    addStat(stats, zh ? "删除文件" : "Deleted files", summary.deleted);
+    addStat(stats, zh ? "未变更" : "Unchanged", summary.skipped);
 
-    this.addDetails(contentEl, "新增", this.plan.create);
-    this.addDetails(contentEl, "更新", this.plan.update);
-    this.addDetails(contentEl, "删除", this.plan.delete);
+    this.addDetails(contentEl, zh ? "新增" : "Created", this.plan.create);
+    this.addDetails(contentEl, zh ? "更新" : "Updated", this.plan.update);
+    this.addDetails(contentEl, zh ? "删除" : "Deleted", this.plan.delete);
 
     new Setting(contentEl)
       .addButton((button) => button
-        .setButtonText("取消")
+        .setButtonText(zh ? "取消" : "Cancel")
         .onClick(() => this.finish(false)))
       .addButton((button) => button
-        .setButtonText("开始同步")
+        .setButtonText(zh ? "开始同步" : "Start sync")
         .setCta()
         .onClick(() => this.finish(true)));
   }
@@ -122,7 +129,7 @@ export class SyncPreviewModal extends Modal {
       list.createEl("li", { text: operation.relativePath });
     }
     if (operations.length > 100) {
-      list.createEl("li", { text: `……另有 ${operations.length - 100} 项` });
+      list.createEl("li", { text: this.options.language === "zh-CN" ? `……另有 ${operations.length - 100} 项` : `…and ${operations.length - 100} more` });
     }
   }
 }

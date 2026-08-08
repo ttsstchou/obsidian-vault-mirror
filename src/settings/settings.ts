@@ -1,4 +1,5 @@
 import type { SyncError } from "../sync/types";
+import type { Language } from "../i18n";
 
 export interface SyncHistoryEntry {
   timestamp: string;
@@ -12,6 +13,7 @@ export interface SyncHistoryEntry {
 }
 
 export interface VaultMirrorSettings {
+  language: Language;
   destinationPath: string;
   previewBeforeSync: boolean;
   warnOnMassDeletion: boolean;
@@ -21,6 +23,7 @@ export interface VaultMirrorSettings {
 }
 
 export const DEFAULT_SETTINGS: VaultMirrorSettings = {
+  language: "zh-CN",
   destinationPath: "",
   previewBeforeSync: true,
   warnOnMassDeletion: true,

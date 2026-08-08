@@ -2,6 +2,7 @@ import { App, Notice, PluginSettingTab, Setting } from "obsidian";
 import type VaultMirrorPlugin from "../main";
 import { chooseDestinationFolder } from "../utils/folderPicker";
 import { validateMirrorPaths } from "../utils/path";
+import { dateLocale, t } from "../i18n";
 
 export class VaultMirrorSettingsTab extends PluginSettingTab {
   constructor(app: App, private readonly plugin: VaultMirrorPlugin) {
@@ -9,23 +10,40 @@ export class VaultMirrorSettingsTab extends PluginSettingTab {
   }
 
   display(): void {
+    const language = this.plugin.settings.language;
+    const text = (key: Parameters<typeof t>[1]) => t(language, key);
     const { containerEl } = this;
     containerEl.empty();
     containerEl.createEl("h2", { text: "Vault Mirror" });
     containerEl.createEl("p", {
       cls: "vault-mirror-warning",
-      text: "Vault Mirror 目前仅支持单向同步。仅在目标 Vault 中进行的修改，可能会在下次同步时被覆盖。"
+      text: language === "zh-CN"
+        ? "Vault Mirror 目前仅支持单向同步。仅在目标 Vault 中进行的修改，可能会在下次同步时被覆盖。"
+        : "Vault Mirror is one-way only. Changes made only in the destination vault may be overwritten by the next sync."
     });
 
     new Setting(containerEl)
-      .setName("源 Vault")
-      .setDesc(`${this.plugin.getSourcePath()} · 当前 Vault`);
+      .setName(text("language"))
+      .setDesc(text("languageDescription"))
+      .addDropdown((dropdown) => dropdown
+        .addOption("zh-CN", text("chinese"))
+        .addOption("en", text("english"))
+        .setValue(language)
+        .onChange(async (value) => {
+          this.plugin.settings.language = value === "en" ? "en" : "zh-CN";
+          await this.plugin.saveSettings();
+          this.display();
+        }));
 
     new Setting(containerEl)
-      .setName("目标文件夹")
-      .setDesc(this.plugin.settings.destinationPath || "尚未选择目标文件夹")
+      .setName(text("sourceVault"))
+      .setDesc(`${this.plugin.getSourcePath()} · ${text("currentVault")}`);
+
+    new Setting(containerEl)
+      .setName(text("destinationFolder"))
+      .setDesc(this.plugin.settings.destinationPath || text("notSelected"))
       .addButton((button) => button
-        .setButtonText(this.plugin.settings.destinationPath ? "更改" : "选择文件夹")
+        .setButtonText(this.plugin.settings.destinationPath ? text("change") : text("chooseFolder"))
         .setCta()
         .onClick(async () => {
           try {
@@ -40,10 +58,10 @@ export class VaultMirrorSettingsTab extends PluginSettingTab {
           }
         }));
 
-    containerEl.createEl("h3", { text: "安全" });
+    containerEl.createEl("h3", { text: text("safety") });
     new Setting(containerEl)
-      .setName("同步前预览")
-      .setDesc("执行同步前显示文件变更摘要。")
+      .setName(text("previewBeforeSync"))
+      .setDesc(text("previewBeforeSyncDescription"))
       .addToggle((toggle) => toggle
         .setValue(this.plugin.settings.previewBeforeSync)
         .onChange(async (value) => {
@@ -52,8 +70,8 @@ export class VaultMirrorSettingsTab extends PluginSettingTab {
         }));
 
     new Setting(containerEl)
-      .setName("大量删除警告")
-      .setDesc("删除超过 10 个文件或目标文件总数的 10% 时显示醒目警告。")
+      .setName(text("massDeletionWarning"))
+      .setDesc(text("massDeletionWarningDescription"))
       .addToggle((toggle) => toggle
         .setValue(this.plugin.settings.warnOnMassDeletion)
         .onChange(async (value) => {
@@ -61,10 +79,10 @@ export class VaultMirrorSettingsTab extends PluginSettingTab {
           await this.plugin.saveSettings();
         }));
 
-    containerEl.createEl("h3", { text: "校验" });
+    containerEl.createEl("h3", { text: text("verification") });
     new Setting(containerEl)
-      .setName("严格文件校验")
-      .setDesc("使用 SHA-256 比较并校验暂存副本。大型 Vault 的同步速度会变慢。")
+      .setName(text("strictVerification"))
+      .setDesc(text("strictVerificationDescription"))
       .addToggle((toggle) => toggle
         .setValue(this.plugin.settings.strictVerification)
         .onChange(async (value) => {
@@ -72,10 +90,10 @@ export class VaultMirrorSettingsTab extends PluginSettingTab {
           await this.plugin.saveSettings();
         }));
 
-    containerEl.createEl("h3", { text: "高级" });
+    containerEl.createEl("h3", { text: text("advanced") });
     new Setting(containerEl)
-      .setName("排除的文件")
-      .setDesc("每行填写一个相对路径，或准确的文件/文件夹名称。默认不会排除 .obsidian。")
+      .setName(text("excludedFiles"))
+      .setDesc(text("excludedFilesDescription"))
       .addTextArea((text) => {
         text.setValue(this.plugin.settings.excludedPaths.join("\n"));
         text.inputEl.rows = 4;
@@ -88,19 +106,21 @@ export class VaultMirrorSettingsTab extends PluginSettingTab {
         });
       });
 
-    containerEl.createEl("h3", { text: "同步历史" });
+    containerEl.createEl("h3", { text: text("history") });
     if (this.plugin.settings.syncHistory.length === 0) {
-      containerEl.createEl("p", { text: "暂无同步记录。" });
+      containerEl.createEl("p", { text: text("noHistory") });
       return;
     }
 
     for (const item of this.plugin.settings.syncHistory) {
       const entry = containerEl.createDiv({ cls: "vault-mirror-history" });
       entry.createEl("strong", {
-        text: `${new Date(item.timestamp).toLocaleString("zh-CN")} · ${item.status === "success" ? "成功" : "失败"}`
+        text: `${new Date(item.timestamp).toLocaleString(dateLocale(language))} · ${item.status === "success" ? text("success") : text("failed")}`
       });
       entry.createEl("span", {
-        text: `新增 ${item.created} · 更新 ${item.updated} · 删除 ${item.deleted} · 跳过 ${item.skipped} · ${(item.duration / 1000).toFixed(1)} 秒`
+        text: language === "zh-CN"
+          ? `新增 ${item.created} · 更新 ${item.updated} · 删除 ${item.deleted} · 跳过 ${item.skipped} · ${(item.duration / 1000).toFixed(1)} 秒`
+          : `${text("created")} ${item.created} · ${text("updated")} ${item.updated} · ${text("deleted")} ${item.deleted} · ${text("skipped")} ${item.skipped} · ${(item.duration / 1000).toFixed(1)} s`
       });
       if (item.errors[0]) entry.createEl("code", { text: item.errors[0].message });
     }

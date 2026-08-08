@@ -1,6 +1,6 @@
 {
   "name": "vault-mirror",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Safely mirror the current macOS Obsidian vault to a local folder, such as iCloud Drive.",
   "main": "main.js",
   "type": "module",

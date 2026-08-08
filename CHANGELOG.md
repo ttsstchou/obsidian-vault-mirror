@@ -2,6 +2,11 @@
 
 All notable changes to this project are documented in this file.
 
+## 0.1.1
+
+- Added a Simplified Chinese / English interface language selector.
+- Localized the settings page and the sync preview, progress, and result dialogs.
+
 ## 0.1.0 — Initial release
 
 - One-way macOS desktop mirror from the current Vault to a user-selected local destination.

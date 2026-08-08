@@ -21,6 +21,7 @@ import { SyncProgressModal } from "./ui/SyncProgressModal";
 import { SyncResultModal } from "./ui/SyncResultModal";
 import { ConsoleLogger } from "./utils/logger";
 import { errorMessage } from "./utils/path";
+import { t } from "./i18n";
 
 interface AppWithSettings {
   setting: {
@@ -36,13 +37,13 @@ export default class VaultMirrorPlugin extends Plugin {
   async onload(): Promise<void> {
     await this.loadSettings();
 
-    this.addRibbonIcon("cloud-upload", "同步到 iCloud", () => {
+    this.addRibbonIcon("cloud-upload", t(this.settings.language, "syncToICloud"), () => {
       void this.startSync();
     });
 
     this.addCommand({
       id: "sync-to-icloud",
-      name: "Sync to iCloud",
+      name: t(this.settings.language, "syncCommand"),
       callback: () => {
         void this.startSync();
       }
@@ -92,7 +93,7 @@ export default class VaultMirrorPlugin extends Plugin {
       return;
     }
 
-    let progressModal = new SyncProgressModal(this.app);
+    let progressModal = new SyncProgressModal(this.app, this.settings.language);
     progressModal.open();
     const startedAt = Date.now();
 
@@ -124,10 +125,11 @@ export default class VaultMirrorPlugin extends Plugin {
               source: this.getSourcePath(),
               destination: this.settings.destinationPath,
               firstSync,
-              massDeletionWarning: this.settings.warnOnMassDeletion && massDeletion
+              massDeletionWarning: this.settings.warnOnMassDeletion && massDeletion,
+              language: this.settings.language
             }).waitForChoice();
             if (confirmed) {
-              progressModal = new SyncProgressModal(this.app);
+              progressModal = new SyncProgressModal(this.app, this.settings.language);
               progressModal.open();
             }
             return confirmed;
@@ -138,8 +140,8 @@ export default class VaultMirrorPlugin extends Plugin {
       progressModal.close();
       if (outcome.status === "cancelled") return;
       await this.recordHistory("success", outcome.result);
-      new SyncResultModal(this.app, outcome.result, true).open();
-      new Notice("iCloud 镜像同步完成");
+      new SyncResultModal(this.app, outcome.result, true, this.settings.language).open();
+      new Notice(this.settings.language === "zh-CN" ? "iCloud 镜像同步完成" : "iCloud mirror sync complete");
     } catch (error) {
       progressModal.close();
       if (error instanceof SyncAlreadyInProgressError) {
@@ -151,8 +153,8 @@ export default class VaultMirrorPlugin extends Plugin {
         ? error.result
         : failureResult(error, Date.now() - startedAt);
       await this.recordHistory("failed", result);
-      new SyncResultModal(this.app, result, false).open();
-      new Notice(`Vault Mirror 同步失败：${result.failed[0]?.message ?? errorMessage(error)}`, 10000);
+      new SyncResultModal(this.app, result, false, this.settings.language).open();
+      new Notice(`${this.settings.language === "zh-CN" ? "Vault Mirror 同步失败" : "Vault Mirror sync failed"}: ${result.failed[0]?.message ?? errorMessage(error)}`, 10000);
       console.error("[Vault Mirror] Sync failed", error);
     }
   }
