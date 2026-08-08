@@ -2,6 +2,11 @@
 
 All notable changes to this project are documented in this file.
 
+## 0.1.3
+
+- Clarified the Mac → iCloud Drive → iPhone workflow in the public documentation.
+- Added prominent pre-sync backup and iPhone view-only notices.
+
 ## 0.1.2
 
 - Fixed Community review errors by using Obsidian setting headings and CSS helpers.
