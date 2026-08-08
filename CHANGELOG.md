@@ -2,6 +2,11 @@
 
 All notable changes to this project are documented in this file.
 
+## 0.1.2
+
+- Fixed Community review errors by using Obsidian setting headings and CSS helpers.
+- Normalized the public plugin description for Community metadata validation.
+
 ## 0.1.1
 
 - Added a Simplified Chinese / English interface language selector.

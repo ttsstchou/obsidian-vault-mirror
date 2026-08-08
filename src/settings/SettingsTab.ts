@@ -14,7 +14,7 @@ export class VaultMirrorSettingsTab extends PluginSettingTab {
     const text = (key: Parameters<typeof t>[1]) => t(language, key);
     const { containerEl } = this;
     containerEl.empty();
-    containerEl.createEl("h2", { text: "Vault Mirror" });
+    addHeading(containerEl, "Vault Mirror");
     containerEl.createEl("p", {
       cls: "vault-mirror-warning",
       text: language === "zh-CN"
@@ -58,7 +58,7 @@ export class VaultMirrorSettingsTab extends PluginSettingTab {
           }
         }));
 
-    containerEl.createEl("h3", { text: text("safety") });
+    addHeading(containerEl, text("safety"));
     new Setting(containerEl)
       .setName(text("previewBeforeSync"))
       .setDesc(text("previewBeforeSyncDescription"))
@@ -79,7 +79,7 @@ export class VaultMirrorSettingsTab extends PluginSettingTab {
           await this.plugin.saveSettings();
         }));
 
-    containerEl.createEl("h3", { text: text("verification") });
+    addHeading(containerEl, text("verification"));
     new Setting(containerEl)
       .setName(text("strictVerification"))
       .setDesc(text("strictVerificationDescription"))
@@ -90,7 +90,7 @@ export class VaultMirrorSettingsTab extends PluginSettingTab {
           await this.plugin.saveSettings();
         }));
 
-    containerEl.createEl("h3", { text: text("advanced") });
+    addHeading(containerEl, text("advanced"));
     new Setting(containerEl)
       .setName(text("excludedFiles"))
       .setDesc(text("excludedFilesDescription"))
@@ -106,7 +106,7 @@ export class VaultMirrorSettingsTab extends PluginSettingTab {
         });
       });
 
-    containerEl.createEl("h3", { text: text("history") });
+    addHeading(containerEl, text("history"));
     if (this.plugin.settings.syncHistory.length === 0) {
       containerEl.createEl("p", { text: text("noHistory") });
       return;
@@ -125,4 +125,8 @@ export class VaultMirrorSettingsTab extends PluginSettingTab {
       if (item.errors[0]) entry.createEl("code", { text: item.errors[0].message });
     }
   }
+}
+
+function addHeading(container: HTMLElement, text: string): void {
+  new Setting(container).setName(text).setHeading();
 }

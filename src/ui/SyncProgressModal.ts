@@ -53,12 +53,12 @@ export class SyncProgressModal extends Modal {
     if (indeterminate) {
       this.countEl?.setText(this.language === "zh-CN" ? "正在处理，请稍候…" : "Working, please wait…");
     } else if (progress.total === 0) {
-      this.progressBarEl?.style.setProperty("width", "100%");
+      this.progressBarEl?.setCssProps({ width: "100%" });
       this.progressEl?.setAttr("aria-valuenow", "100");
       this.countEl?.setText(this.language === "zh-CN" ? "此阶段无需处理文件" : "No files to process in this phase");
     } else {
       const percentage = Math.min(100, Math.round((progress.completed / progress.total) * 100));
-      this.progressBarEl?.style.setProperty("width", `${percentage}%`);
+      this.progressBarEl?.setCssProps({ width: `${percentage}%` });
       this.progressEl?.setAttr("aria-valuenow", String(percentage));
       this.countEl?.setText(this.language === "zh-CN"
         ? `已处理 ${progress.completed} / ${progress.total} 项（${percentage}%）`
@@ -71,7 +71,7 @@ export class SyncProgressModal extends Modal {
     this.progressEl?.toggleClass("is-indeterminate", indeterminate);
     if (indeterminate) {
       this.progressEl?.removeAttribute("aria-valuenow");
-      this.progressBarEl?.style.removeProperty("width");
+      this.progressBarEl?.setCssProps({ width: "" });
     }
   }
 }
