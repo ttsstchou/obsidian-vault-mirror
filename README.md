@@ -4,41 +4,45 @@
 
 ![Vault Mirror safely mirrors an Obsidian vault to a local cloud-synced folder.](./assets/vault-mirror-hero.png)
 
-**Vault Mirror** is a macOS-only Obsidian desktop plugin for safely mirroring the vault you currently have open to another local folder—such as an iCloud Drive vault for use on iPhone.
+**Vault Mirror** is a macOS Obsidian desktop plugin for a simple multi-device workflow: write in your main Mac vault, mirror it to an iCloud Drive vault, then read it in Obsidian on iPhone.
 
 It is intentionally a **one-way** mirror:
 
 ```text
-Current Obsidian vault (source of truth) → local destination folder
+✍️ Mac source vault (source of truth) → ☁️ iCloud Drive destination → 📱 iPhone (view and read)
 ```
 
 Vault Mirror runs only on your Mac. It does not connect to Baidu Netdisk, iCloud, or any other cloud API. Your existing sync clients remain responsible for moving files between devices.
 
-> [!warning]
-> Vault Mirror is not a backup tool and it is not two-way sync. Destination-only files and edits can be overwritten or deleted during the next mirror. Keep an independent backup of important data.
+> [!danger]
+> **Back up before your first sync.** Copy or archive your source Vault and any existing iCloud destination Vault before using Vault Mirror. This plugin is a one-way mirror, not a backup tool and not two-way sync. Destination-only files and edits can be overwritten or deleted during the next mirror.
 
-## Why Vault Mirror?
+> [!important]
+> **Mobile is for viewing.** Treat the iPhone Vault as a read-only copy. Create and edit notes in the Mac source Vault, then run Vault Mirror when you want the latest content on your phone. Editing the iPhone destination can be lost at the next sync.
 
-If your primary vault lives in one desktop sync folder but your iPhone vault needs to live in iCloud Drive, Vault Mirror provides a deliberate bridge on macOS:
+## 🧭 How the multi-device workflow works
 
-1. Open your primary vault in Obsidian on your Mac.
-2. Choose an existing iCloud Drive vault as the destination once.
-3. Review the live change plan.
-4. Confirm a safe, one-way mirror run.
+If your primary Vault lives in a desktop sync folder, while your iPhone Vault must live in iCloud Drive, Vault Mirror provides a deliberate, one-way bridge on macOS:
 
-The plugin copies notes, attachments, hidden files, and `.obsidian` configuration by default. It also removes destination-only files only after all creates and updates have completed successfully.
+1. ✍️ Open and edit your **primary Vault** in Obsidian on your Mac.
+2. ☁️ Select the exact existing **iCloud Drive Vault** as the destination once.
+3. 🔍 Run Vault Mirror and review the **fresh live scan**.
+4. ✅ Confirm the one-way mirror.
+5. 📱 Open the iCloud Vault on iPhone to read the latest notes and attachments.
 
-## Highlights
+Vault Mirror copies notes, attachments, hidden files, and `.obsidian` configuration by default. It removes destination-only files only after all creates and updates have completed successfully.
 
-- **Current vault as source** — no source path to configure.
-- **Choose the destination once** — select an existing local folder, including an iCloud Drive vault.
-- **Live preview** — every run scans both folders again and displays the current plan before applying it.
-- **Note-first summary** — prominently shows changed Markdown notes, while retaining totals for all files and configuration.
-- **Safe mirror order** — scan → compare → plan → stage copies → update → delete.
-- **Deletion safeguards** — warns about large deletions; never enters the delete phase when copying or verification fails.
-- **Atomic updates and rollback** — changed files are staged first; existing destination files are backed up during commit and restored if a commit fails.
-- **Source stability checks** — waits for the source folder to settle before planning, helpful when desktop sync clients are still creating or removing temporary files.
-- **Privacy-first** — no account, network transfer, telemetry, or cloud API.
+## ✨ Highlights
+
+- 🧠 **Current Vault is the source** — no source path to configure.
+- ☁️ **Choose iCloud once** — select an existing local destination, including an iCloud Drive Vault.
+- 🔍 **Live preview** — every run scans both folders again; it never reuses an old plan.
+- 📝 **Note-first summary** — changed Markdown notes are prominent, with totals for attachments and configuration too.
+- 🛡️ **Safe order** — scan → compare → plan → stage copies → update → delete.
+- ⚠️ **Deletion safeguards** — large deletions are highlighted; no deletion phase runs after a copy or verification failure.
+- 🔄 **Rollback-aware updates** — changed files are staged first and existing destination files are restored if a commit fails.
+- ⏳ **Source stability checks** — waits for desktop sync clients to finish creating or removing temporary files.
+- 🔒 **Private by design** — no account, telemetry, cloud API, or network transfer.
 
 ## Preview and progress
 
@@ -52,7 +56,7 @@ During a run, Vault Mirror shows the current phase and progress for comparison, 
 
 ### From the Obsidian Community directory
 
-After this plugin has passed the Obsidian Community review, install it from **Settings → Community plugins**, then enable **Vault Mirror**.
+Install **Vault Mirror** from **Settings → Community plugins**, then enable it.
 
 ### Manual installation
 
@@ -67,15 +71,16 @@ After this plugin has passed the Obsidian Community review, install it from **Se
 4. Reload Obsidian.
 5. Enable **Vault Mirror** in **Settings → Community plugins**.
 
-## Setup and use
+## 🚀 First-time setup and daily use
 
-1. Open the **source vault** in Obsidian on macOS. This is the only source Vault; it cannot be changed in the plugin settings.
-2. Open **Settings → Community plugins → Vault Mirror**.
-3. Under **Destination folder**, select the exact existing destination Vault folder—for example, your iCloud Drive vault folder, not its parent `Documents` folder.
-4. Click the cloud-upload icon in the left Ribbon, or run **Vault Mirror: Sync to iCloud** from the Command Palette.
-5. Wait for the live scan to complete. Review the note count, full file-change count, source, destination, and deletion warning.
-6. Select **开始同步** to apply the plan.
-7. Read the result modal before closing it. The latest 20 runs are also stored in the plugin settings.
+1. 🧳 **Back up both Vaults** before the first run.
+2. ✍️ Open the **source Vault** in Obsidian on macOS. It is the only source of truth.
+3. ⚙️ Open **Settings → Community plugins → Vault Mirror**.
+4. 📁 Under **Destination folder**, select the exact existing iCloud Vault folder—not its parent `Documents` folder.
+5. ☁️ Click the cloud-upload Ribbon icon, or run **Vault Mirror: Sync to iCloud** from the Command Palette.
+6. 🔍 Wait for the live scan, then check the note count, all-file count, source, destination, and deletion warning.
+7. ✅ Select **Start sync** to apply the plan.
+8. 📱 Wait for iCloud Drive to finish, then use the iPhone Vault for viewing and reading.
 
 ## How mirroring works
 
