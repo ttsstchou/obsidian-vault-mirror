@@ -1,0 +1,9 @@
+{
+  "id": "vault-mirror",
+  "name": "Vault Mirror",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "Safely mirror the current macOS Vault to a local folder, such as iCloud Drive. 安全地将当前 Vault 单向镜像到本地文件夹。",
+  "author": "ttsstchou",
+  "isDesktopOnly": true
+}

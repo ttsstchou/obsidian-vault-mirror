@@ -1,0 +1,140 @@
+.vault-mirror-modal {
+  min-width: min(520px, 90vw);
+}
+
+.vault-mirror-path-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 12px 0;
+}
+
+.vault-mirror-path-block code,
+.vault-mirror-progress-path,
+.vault-mirror-errors code,
+.vault-mirror-history code {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.vault-mirror-stats {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s);
+  margin: 16px 0;
+  padding: 8px 12px;
+}
+
+.vault-mirror-scan-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 18px 0 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--interactive-accent);
+  border-radius: var(--radius-m);
+  background: var(--background-secondary);
+}
+
+.vault-mirror-scan-label,
+.vault-mirror-scan-time {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+}
+
+.vault-mirror-note-breakdown {
+  font-weight: var(--font-medium);
+}
+
+.vault-mirror-file-total {
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.vault-mirror-change-total {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.vault-mirror-change-total strong {
+  color: var(--interactive-accent);
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.vault-mirror-change-total span {
+  font-weight: var(--font-semibold);
+}
+
+.vault-mirror-stat {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.vault-mirror-warning {
+  color: var(--text-error);
+  font-weight: var(--font-semibold);
+}
+
+.vault-mirror-notice {
+  color: var(--text-warning);
+}
+
+.vault-mirror-details {
+  margin: 8px 0;
+}
+
+.vault-mirror-details ul {
+  max-height: 180px;
+  overflow: auto;
+}
+
+.vault-mirror-errors,
+.vault-mirror-history {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 10px 0;
+}
+
+.vault-mirror-history {
+  border-bottom: 1px solid var(--background-modifier-border);
+  padding-bottom: 10px;
+}
+
+.vault-mirror-progress-count {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--font-semibold);
+}
+
+.vault-mirror-progress {
+  position: relative;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--background-modifier-border);
+}
+
+.vault-mirror-progress-bar {
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: var(--interactive-accent);
+  transition: width 160ms ease-out;
+}
+
+.vault-mirror-progress.is-indeterminate .vault-mirror-progress-bar {
+  width: 38%;
+  animation: vault-mirror-indeterminate 1.2s ease-in-out infinite;
+}
+
+@keyframes vault-mirror-indeterminate {
+  0% {
+    transform: translateX(-110%);
+  }
+
+  100% {
+    transform: translateX(290%);
+  }
+}

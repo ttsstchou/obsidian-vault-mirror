@@ -1,0 +1,26 @@
+<svg width="1280" height="760" viewBox="0 0 1280 760" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title description">
+  <title id="title">Vault Mirror Chinese live sync preview</title>
+  <desc id="description">A privacy-safe mockup of the Vault Mirror sync preview in Simplified Chinese.</desc>
+  <rect width="1280" height="760" rx="32" fill="#17161C"/>
+  <rect x="28" y="28" width="1224" height="704" rx="24" fill="#201F26" stroke="#47434F" stroke-width="2"/>
+  <text x="76" y="108" fill="#F2F0F7" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="38" font-weight="700">同步到 iCloud</text>
+  <text x="76" y="166" fill="#C9C3D0" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="21" font-weight="600">源 Vault · 当前 Vault</text>
+  <text x="76" y="202" fill="#F2F0F7" font-family="SFMono-Regular, Consolas, monospace" font-size="18">/Users/you/Documents/MyVault</text>
+  <text x="76" y="252" fill="#C9C3D0" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="21" font-weight="600">目标 Vault</text>
+  <text x="76" y="288" fill="#F2F0F7" font-family="SFMono-Regular, Consolas, monospace" font-size="18">…/iCloud Drive/Documents/My iPhone Vault</text>
+  <rect x="76" y="330" width="1128" height="172" rx="16" fill="#292536" stroke="#A48AFF" stroke-width="2"/>
+  <text x="108" y="374" fill="#C9C3D0" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="19">本次实时扫描发现</text>
+  <text x="108" y="440" fill="#A48AFF" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="68" font-weight="800">1</text>
+  <text x="164" y="438" fill="#F2F0F7" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="29" font-weight="700">篇笔记变更</text>
+  <text x="108" y="474" fill="#E0D9E9" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="18">新增 0 · 更新 1 · 删除 0</text>
+  <text x="680" y="402" fill="#C9C3D0" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="18">全部文件变更：6 项</text>
+  <text x="680" y="436" fill="#8F8998" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="16">包含附件、Vault 配置及其他文件</text>
+  <text x="680" y="474" fill="#8F8998" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="16">扫描完成时间：2026/08/08 18:30</text>
+  <rect x="76" y="534" width="1128" height="116" rx="14" fill="#292831" stroke="#47434F" stroke-width="2"/>
+  <text x="108" y="580" fill="#F2F0F7" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="20" font-weight="600">新增文件</text>
+  <text x="1160" y="580" fill="#F2F0F7" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="20" font-weight="700">2</text>
+  <text x="108" y="626" fill="#F2F0F7" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="20" font-weight="600">更新文件</text>
+  <text x="1160" y="626" fill="#F2F0F7" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="20" font-weight="700">4</text>
+  <rect x="1006" y="676" width="198" height="48" rx="12" fill="#7C5CFF"/>
+  <text x="1045" y="708" fill="white" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="19" font-weight="700">开始同步</text>
+</svg>
